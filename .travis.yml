@@ -8,3 +8,22 @@ before_install:
 
 script:
   - docker run -e CI=true nmouco/docker-react npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  # region should be the region where we create the elasticbeanstalk app
+  region: "us-west-2"
+  # name of the app created on aws
+  app: "docker-react"
+  # name of the env of the app on aws
+  env: "Docker-env"
+  # name of the bucket where travis is going to deploy the app on aws: created automatically
+  # when elasticbeanstalk was created
+  bucket_name: "elasticbeanstalk-us-west-2-306476627547"
+  bucket_path: "docker-react"
+  # app will be only deployed on aws when a PR is done to master branch
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
